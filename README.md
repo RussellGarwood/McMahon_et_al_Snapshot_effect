@@ -1,4 +1,4 @@
-# McMahon et al. - The snapshot effect: can slower decay translate into worse average preservation of fossils? - Supplemetnary information
+# McMahon et al. - The snapshot effect: can slower decay translate into worse average preservation of fossils? - Supplementary information
 
 Supplementary information for the paper:
 
