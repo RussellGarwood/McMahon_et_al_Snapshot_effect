@@ -227,7 +227,7 @@ doSimulationAge (int individuals, float birthChance, float decayRate, int repeat
     if (timer)   benchmark.step ("Analysis_02b");
   //Here ends the outer loop that controls the repeat number of the simulations
   }
-  Rcout << "1";
+  
   //We're all done with our repeats - now all  that is left is to return data
   if (repeats == 1)
   {
