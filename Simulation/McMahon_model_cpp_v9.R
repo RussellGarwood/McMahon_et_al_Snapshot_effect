@@ -31,6 +31,12 @@ sourceCpp("McMahon_model_v9.cpp")
 #All R functions are in their own folder
 source("functions/graphSingleRun.R")
 
+
+################################################################################################################################################ 
+# Introductory examples - not used in paper, but useful to provide an idea of how the model works
+################################################################################################################################################
+
+
 ############################################ Single run ############################################
 ## Here we can graph a single run and look at the values through time plotted
 
@@ -79,51 +85,10 @@ for(age in unique(taphonomyDFRandomStartAges$startAgeRounded))
 ageMeanDataframe <- data.frame(ageVector,meanVector)
 write.csv(rateMeanDataframe, paste(outputDirectory,"ageMeanDataframe.csv",sep=""))
 
-ggplot(data = taphonomyDFRandomStartAges) + geom_violin(mapping = aes(factor(.data[["startAgeRounded"]]), .data[["decayLevels"]])) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA)) +
-  labs(title=paste("Taphonomy Simulator - Randomised life span vs preservation"), x="Individual life span", y="Decay level") 
-ggsave(filename <- paste(outputDirectory,"Start_age_single_run_boxplot.pdf",sep=""))
+################################################################################################################################################ 
+# Experiments used in paper - These are the source of data used for figures, plotting code is found in a separate file
+################################################################################################################################################
 
-ggplot(data = ageMeanDataframe) + geom_col(mapping = aes(ageVector,meanVector)) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA)) +
-  labs(title=paste("Taphonomy Simulator - Randomised lifespan vs mean decay"), x="Individual life span (rounded)", y="Mean decay value")
-ggsave(filename <- paste(outputDirectory,"Start_age_single_run_colplot.pdf",sep=""))
-
-
-############################################ Single run with random decay rates ############################################
-#This is panel C, and experiment 3
-
-## Here we can do a single run, but assign the individuals in that run their own, random, decay rate
-#Parameters
-birthChance <- 0.0020;
-decayRate<-0.02; # This is max from decay graph
-individuals <- 50000;
-repeats <- 1;
-startAge <- 500;
-runFor <- 20000;
-
-taphonomyDFRandomDecayRates<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge, runFor, FALSE, TRUE)
-taphonomyDFRandomDecayRates$decayRateRounded<-round(taphonomyDFRandomDecayRates$decayRates, digits = 3)
-write.csv(taphonomyDFRandomDecayRates, paste(outputDirectory,"taphonomyDFRandomDecayRates.csv",sep=""))
-
-## Now do graphing for this run
-ggplot(data = taphonomyDFRandomDecayRates) + geom_boxplot(mapping = aes(factor(.data[["decayRateRounded"]]), .data[["decayLevels"]])) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA)) +
-  labs(title=paste("Taphonomy Simulator - Randomised decay rate vs preservation"), x="Individual decay rate", y="Decay level") 
-ggsave(filename <- paste(outputDirectory,"Decay_rate_single_run_boxplot.pdf",sep=""))
-
-##This code is useful for anaylsing the data - no longer used for graphing, but I have left it in
-rateVector<-vector()
-meanVector<-vector()
-aliveVector<-vector()
-for(rate in unique(taphonomyDFRandomDecayRates$decayRateRounded))
-{
-  rateVector<-append(rateVector,rate)
-  meanVector<-append(meanVector,mean(taphonomyDFRandomDecayRates[taphonomyDFRandomDecayRates$decayRateRounded==rate,]$decayLevels))
-  aliveVector<-append(aliveVector,sum(taphonomyDFRandomDecayRates$states  == 1 & taphonomyDFRandomDecayRates$decayRateRounded == rate))
-}
-rateMeanDataframe <- data.frame(rateVector,meanVector,aliveVector)
-write.csv(rateMeanDataframe, paste(outputDirectory,"randomRateMeanDataframe.csv",sep=""))
 
 ############################################ Decay rate graph using replicates ############################################
 #This is panel A, and experiment 1
@@ -162,16 +127,6 @@ decayLevelDF<-decayLevelDF[-c(1), ]
 decayLevelDF$PerDay<-decayLevelDF$decayRate*10
 write.csv(decayLevelDF, paste(outputDirectory,"decayLevelDF.csv",sep=""))
 
-ggplot(data = decayLevelDF, aes(x=as.factor(PerDay), y=taphonomyValues)) + geom_boxplot() + #ylim(0.6,0.91) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-  labs(title=paste("Taphonomy Simulator - decay rate vs preservation"), x="Decay rate (per day)", y="Average non-zero value")
-ggsave(filename <- paste(outputDirectory,"Decay_rate_replicates_boxplot.pdf",sep=""))
-
-ggplot(data = decayLevelDF, aes(x=PerDay, y=taphonomyValues)) + geom_point() + #ylim(0.6,0.91) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-  labs(title=paste("Taphonomy Simulator - decay rate vs preservation"), x="Decay rate (per day)", y="Average non-zero value")
-ggsave(filename <- paste(outputDirectory,"Decay_rate_replicates_point.pdf",sep=""))
-
 ############################################ Life span graph ############################################
 #This is panel B, and experiment 2
 
@@ -204,15 +159,34 @@ decayLevelDFLifeSpan<-decayLevelDFLifeSpan[-c(1), ]
 decayLevelDFLifeSpan$days<-decayLevelDFLifeSpan$startAge/10
 write.csv(decayLevelDFLifeSpan,paste(outputDirectory,"decayLevelDFLifeSpan.csv", sep=""))
 
-ggplot(data = decayLevelDFLifeSpan, aes(x=as.factor(days), y=taphonomyValues)) + geom_boxplot() + theme_minimal() + 
-  theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-  labs(title=paste("Taphonomy Simulator - lifespan vs preservation"), x="Lifespan (days)", y="Average non-zero value")
-ggsave(filename <- paste(outputDirectory,"Life_span_boxplot.pdf",sep=""))
+############################################ Single run with random decay rates ############################################
+#This is panel C, and experiment 3
 
-ggplot(data = decayLevelDFLifeSpan, aes(x=days, y=taphonomyValues)) + geom_jitter() + theme_minimal() + 
-  theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-  labs(title=paste("Taphonomy Simulator - lifespan vs preservation"), x="Lifespan (days)", y="Average non-zero value")
-ggsave(filename <- paste(outputDirectory,"Life_span_points.pdf",sep=""))
+## Here we can do a single run, but assign the individuals in that run their own, random, decay rate
+#Parameters
+birthChance <- 0.0020;
+decayRate<-0.02; # This is max from decay graph
+individuals <- 50000;
+repeats <- 1;
+startAge <- 500;
+runFor <- 20000;
+
+taphonomyDFRandomDecayRates<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge, runFor, FALSE, TRUE)
+taphonomyDFRandomDecayRates$decayRateRounded<-round(taphonomyDFRandomDecayRates$decayRates, digits = 3)
+write.csv(taphonomyDFRandomDecayRates, paste(outputDirectory,"taphonomyDFRandomDecayRates.csv",sep=""))
+
+##This code is useful for anaylsing the data - no longer used for graphing, but I have left it in
+rateVector<-vector()
+meanVector<-vector()
+aliveVector<-vector()
+for(rate in unique(taphonomyDFRandomDecayRates$decayRateRounded))
+{
+  rateVector<-append(rateVector,rate)
+  meanVector<-append(meanVector,mean(taphonomyDFRandomDecayRates[taphonomyDFRandomDecayRates$decayRateRounded==rate,]$decayLevels))
+  aliveVector<-append(aliveVector,sum(taphonomyDFRandomDecayRates$states  == 1 & taphonomyDFRandomDecayRates$decayRateRounded == rate))
+}
+rateMeanDataframe <- data.frame(rateVector,meanVector,aliveVector)
+write.csv(rateMeanDataframe, paste(outputDirectory,"randomRateMeanDataframe.csv",sep=""))
 
 ############################################ Heat map ############################################
 # This is panel D and Experiment 4
@@ -274,37 +248,3 @@ for (lab in seq(from = 50, to = 600, by = 5))
 decayLevelDFHeatMapDays<-decayLevelDFHeatMap
 decayLevelDFHeatMapDays$decayRate<-decayLevelDFHeatMapDays$decayRate*10
 decayLevelDFHeatMapDays$startAge<-decayLevelDFHeatMapDays$startAge/10
-
-ggplot(data = decayLevelDFHeatMapDays, aes(x=startAge, y=decayRate)) + geom_raster(aes(fill = taphonomyValues), hjust = 1, vjust =1)  + 
-  scale_fill_distiller(palette = "YlOrRd", direction = -1) +  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA))  +
-  labs(title=paste("Taphonomy Simulator - Decay rate (per day), lifespan (days) and preservation"), x="Lifespan (days)", y="Decay rate (per day)", fill = "Average non-zero value") 
-ggsave(filename <- paste(outputDirectory,"Heatmap_yellow_red.pdf",sep=""))
-
-ggplot(data = decayLevelDFHeatMapDays, aes(x=startAge, y=decayRate)) + geom_raster(aes(fill = taphonomyValues), hjust = 1, vjust =1)  + 
-  scale_fill_distiller(palette = "Purples", direction = -1) +  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA))  +
-  labs(title=paste("Taphonomy Simulator - Decay rate (per day), lifespan (days) and preservation"), x="Lifespan (days)", y="Decay rate (per day)", fill = "Average non-zero value")+
-ggsave(filename <- paste(outputDirectory,"Heatmap_purples.pdf",sep=""))
-
-ggplot(data = decayLevelDFHeatMapDays, aes(x=startAge, y=decayRate)) + geom_raster(aes(fill = taphonomyValues), hjust = 1, vjust =1)  + 
-  scale_fill_distiller(palette = "PuBu", direction = -1) +  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA))  +
-  labs(title=paste("Taphonomy Simulator - Decay rate (per day), lifespan (days) and preservation"), x="Lifespan (days)", y="Decay rate (per day)", fill = "Average non-zero value")
-
-ggsave(filename <- paste(outputDirectory,"Heatmap_purple_blue.pdf",sep=""))
-
-ggplot(data = decayLevelDFHeatMapDays, aes(x=startAge, y=decayRate)) + geom_raster(aes(fill = taphonomyValues), hjust = 1, vjust =1)  + 
-  scale_fill_gradient2(low = "darkblue", high = "black", mid = "white", midpoint = 0.93) +  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA))  +
-  labs(title=paste("Taphonomy Simulator - Decay rate (per day), lifespan (days) and preservation"), x="Lifespan (days)", y="Decay rate (per day)", fill = "Average non-zero value")
-
-ggsave(filename <- paste(outputDirectory,"Heatmap_blue_black_white.pdf",sep=""))
-
-ggplot(data = decayLevelDFHeatMapDays, aes(x=startAge, y=decayRate)) + geom_raster(aes(fill = taphonomyValues), hjust = 1, vjust =1)  + 
-  scale_fill_gradientn(colours = rainbow(10)) +  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA))  +
-  labs(title=paste("Taphonomy Simulator - Decay rate (per day), lifespan (days) and preservation"), x="Lifespan (days)", y="Decay rate (per day)", fill = "Average non-zero value")
-
-ggsave(filename <- paste(outputDirectory,"Heatmap_rainbow.pdf",sep=""))
-
-ggplot(data = decayLevelDFHeatMapDays, aes(x=startAge, y=decayRate)) + geom_raster(aes(fill = taphonomyValues), hjust = 1, vjust =1)  + 
-  scale_fill_gradientn(colours = topo.colors(7)) +  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA))  +
-  labs(title=paste("Taphonomy Simulator - Decay rate (per day), lifespan (days) and preservation"), x="Lifespan (days)", y="Decay rate (per day)", fill = "Average non-zero value")
-
-ggsave(filename <- paste(outputDirectory,"Heatmap_topo.pdf",sep=""))
