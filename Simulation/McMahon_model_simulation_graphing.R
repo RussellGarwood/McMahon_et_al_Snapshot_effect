@@ -1,13 +1,26 @@
+## If packages aren't installed, install them, then load them
+packages <- c("ggplot2", "Rcpp", "gridExtra", "grid","viridis", "scico")
+if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
+  install.packages(packages[!packages %in% installed.packages()[,"Package"]])
+}
+# Load packages
+invisible(lapply(packages, library, character.only = TRUE))
+rm("packages")
+
+#Set working directory if not calling from a bash script
+#setwd("/SET/YOUR/PATH/HERE")
+
 ############################################ Graphing ############################################
-#setwd("~/Desktop/Programming/scripts/Simulation/McMahon_model/") #Laptop and Workstation
-#outputDirectory<-paste(getwd(),"/graphs/",sep="")
+outputDirectory<-paste(getwd(),"/graphs/",sep="")
 
 #Load data from the CSVs if required
+wd<-getwd()
 paste(getwd(),"/results/",sep="") |> setwd()
 decayLevelReplicates<-read.csv("decayLevelDF.csv")
 randomRatesDataframe<-read.csv("taphonomyDFRandomDecayRates.csv")
 lifeSpanReplicates<-read.csv("decayLevelDFLifeSpan.csv")
 decayLevelDFHeatMap<-read.csv("decayLevelDFHeatMap.csv")
+setwd(wd)
 
 #Initialize plotlist
 plot_list <- list()
@@ -46,7 +59,6 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
                           legend.background = element_rect(fill = alpha("white", 0.8), colour = "grey70")) + 
   labs(x="Decay rate (per day)", y="Mean integrity", tag = "A") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) 
-##To do - add legend!
 
 ##### Random decay rates ##### 
 #This is panel C, and experiment 3

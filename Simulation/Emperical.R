@@ -110,7 +110,7 @@ empiricalDataTaphanomicStateIndividuals <- empiricalDataTaphanomicStateLong |>
 jitter_plot_list[[1]]<-ggplot(empiricalDataTaphanomicStateIndividuals, aes(x = Taxon, y = StateNum, colour = Biomineralization)) +
   geom_jitter(width = 0.3, height = 0.1, alpha = 0.6) + geom_vline(xintercept = vline_pos, linetype = "dotted", color = "black") +
   theme_minimal() +  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none", panel.border = element_rect(color="black", fill=NA)) + scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) +
-  labs(y = "Taphonomic state", x = "Taxon") +  scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataTaphanomicStateIndividuals$StateNum))) +
+  labs(y = "Articulation", x = "Taxon") +  scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataTaphanomicStateIndividuals$StateNum))) +
   # Add label at the top of y axis
   annotate("label", x = 0.5, y = max(empiricalDataTaphanomicStateIndividuals$StateNum) + 0.3, label = "Aritculated", hjust = 0, colour = "grey50", fill = "white") +
   annotate("label", x = 0.5, y = min(empiricalDataTaphanomicStateIndividuals$StateNum) - 0.3, label = "Disarticulated", hjust = 0, colour = "grey50") 
@@ -126,7 +126,7 @@ empiricalDataPreservationalStateIndividuals <- empiricalDataPreservationalStateL
 jitter_plot_list[[2]] <-ggplot(empiricalDataPreservationalStateIndividuals, aes(x = Taxon, y = StateNum, colour = Biomineralization)) +
   geom_jitter(width = 0.3, height = 0.1, alpha = 0.6) + geom_vline(xintercept = vline_pos, linetype = "dotted", color = "black") + theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.8),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
-  scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) + labs(y = "Preservational state", x = "Taxon") + scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataPreservationalStateIndividuals$StateNum))) +
+  scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) + labs(y = "Tissue quality", x = "Taxon") + scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataPreservationalStateIndividuals$StateNum))) +
   annotate("label", x = 0.5, y = max(empiricalDataPreservationalStateIndividuals$StateNum) + 0.3, label = "Labile tissues remain", hjust = 0, colour = "grey50", fill = "white") +
   annotate("label", x = 0.5, y = min(empiricalDataPreservationalStateIndividuals$StateNum) - 0.3, label = "Labile tissues lost", hjust = 0, colour = "grey50") 
 
@@ -144,7 +144,7 @@ ggsave(filename <- paste(outputDirectory,"Empirical_jitterplots.png",sep=""),
 jitter_plot_list[[1]]<-ggplot(empiricalDataTaphanomicStateIndividuals, aes(x = Biomineralization, y = StateNum, colour = Biomineralization)) +
   geom_jitter(width = 0.2, height = 0.1, alpha = 0.6) + geom_vline(xintercept = vline_pos, linetype = "dotted", color = "black") +
   theme_minimal() +  theme(legend.position = "none",  axis.text.x = element_text(size = 11, color = "black"), panel.border = element_rect(color="black", fill=NA)) + scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) +
-  labs(y = "Taphonomic state", x = NULL) +  scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataTaphanomicStateIndividuals$StateNum))) +
+  labs(y = "Articulation", x = NULL) +  scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataTaphanomicStateIndividuals$StateNum))) +
   # Add label at the top of y axis
   annotate("label", size = 3.5, x = 0.5, y = max(empiricalDataTaphanomicStateIndividuals$StateNum) + 0.3, label = "Articulated", hjust = 0, colour = "grey50", fill = "white") +
   annotate("label", size = 3.5, x = 0.5, y = min(empiricalDataTaphanomicStateIndividuals$StateNum) - 0.3, label = "Disarticulated", hjust = 0, colour = "grey50") 
@@ -152,7 +152,7 @@ jitter_plot_list[[1]]<-ggplot(empiricalDataTaphanomicStateIndividuals, aes(x = B
 jitter_plot_list[[2]] <-ggplot(empiricalDataPreservationalStateIndividuals, aes(x = Biomineralization, y = StateNum, colour = Biomineralization)) +
   geom_jitter(width = 0.2, height = 0.1, alpha = 0.6) + geom_vline(xintercept = vline_pos, linetype = "dotted", color = "black") +
   theme_minimal() +  theme(legend.position = "none",  axis.text.x = element_text(size = 11, color = "black"), panel.border = element_rect(color="black", fill=NA)) + scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) +
-  labs(y = "Preservational state", x = NULL) + scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataPreservationalStateIndividuals$StateNum))) +
+  labs(y = "Tissue quality", x = NULL) + scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataPreservationalStateIndividuals$StateNum))) +
   # Add label at the top of y axis
   annotate("label", size = 3.5, x = 0.5, y = max(empiricalDataPreservationalStateIndividuals$StateNum) + 0.3, label = "Labile tissues remain", hjust = 0, colour = "grey50", fill = "white") +
   annotate("label", size = 3.5, x = 0.5, y = min(empiricalDataPreservationalStateIndividuals$StateNum) - 0.3, label = "Labile tissues lost", hjust = 0, colour = "grey50") 
