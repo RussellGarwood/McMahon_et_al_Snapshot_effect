@@ -95,7 +95,6 @@ write.csv(rateMeanDataframe, paste(outputDirectory,"ageMeanDataframe.csv",sep=""
 
 birthChance <- 0.0020;
 individuals <- 5000;
-repeats <- 500;
 startAge <-500;
 
 #Let's do decay rates for 2 month decay intervals between almost immediate decay (5 days) and 5 years decay time
@@ -114,6 +113,20 @@ decayLevelDF<-data.frame("taphonomyValues" = 0, "decayRate" = 0);
 for (decayRate in decayRateV) 
 {
   print(paste("Doing decayRate", decayRate))
+
+  #Chartr here to get rid of any points we have in our numbers
+  outputDirectoryLocal<-chartr(".","p",paste(outputDirectory,"/Experiment_01/DR_",decayRate,"_SA_",startAge,"/",sep=""))
+  dir.create(outputDirectoryLocal)
+
+  #Do single repeat to provide graphs and stats on this run
+  repeats <- 1;    
+  if(decayRate<0.0015)taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,40000)
+  else taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,20000)
+  graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate), outputDirectoryLocal)
+  
+  #Now do multiple repeats
+  repeats <- 500;
+
   if(decayRate<0.0015)taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,40000)
   else taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,20000)
   #To check a single run, run for 1 repeat, then as follows
@@ -133,7 +146,6 @@ write.csv(decayLevelDF, paste(outputDirectory,"decayLevelDF.csv",sep=""))
 birthChance <- 0.000015;#This has to be very small so as not to fill the list with long life spans
 decayRate<-0.001;#A decay rate of 100 days
 individuals <- 5000;
-repeats <- 500;
 
 #Lifespans of 10 days to 2000 days (5.5 years) for a decay rate of 100 days
 startAgeV<-vector()
@@ -147,6 +159,17 @@ decayLevelDFLifeSpan <- data.frame("taphonomyValues" = 0, "startAge" = 0);
 for (startAge in startAgeV) 
 {
   print(paste("Doing startAge", startAge))
+  
+  outputDirectoryLocal<-chartr(".","p",paste(outputDirectory,"/Experiment_02/DR_",decayRate,"_SA_",startAge,"/",sep=""))
+  dir.create(outputDirectoryLocal)
+  
+  #Do single repeat to provide graphs and stats on this run
+  repeats <- 1;    
+  taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,50000)
+  graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate), outputDirectoryLocal)
+  
+  #Now do multiple repeats
+  repeats <- 500;
   taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,50000)
   #To check a single run, run for 1 repeat, then as follows
   #graphSingleRun(taphonomyValues, "")
@@ -172,6 +195,15 @@ startAge <- 500;
 runFor <- 20000;
 
 taphonomyDFRandomDecayRates<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge, runFor, FALSE, TRUE)
+
+outputDirectoryLocal<-chartr(".",paste(outputDirectory,"/Experiment_03/",sep=""))
+dir.create(outputDirectoryLocal)
+
+#Do single repeat to provide graphs and stats on this run
+taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,50000)
+graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate), outputDirectoryLocal)
+
+#Prepare for writing then write file
 taphonomyDFRandomDecayRates$decayRateRounded<-round(taphonomyDFRandomDecayRates$decayRates, digits = 3)
 write.csv(taphonomyDFRandomDecayRates, paste(outputDirectory,"taphonomyDFRandomDecayRates.csv",sep=""))
 
@@ -212,7 +244,7 @@ for (decayRate in decayRateV2)
   for (startAge in startAgeV2) 
   {
     print(paste("Doing decayRate", decayRate, "and startAge", startAge))
-    outputDirectoryLocal<-chartr(".","p",paste(outputDirectory,"DR_",decayRate,"_SA_",startAge,"/",sep=""))
+    outputDirectoryLocal<-chartr(".","p",paste(outputDirectory,"/Experiment_04/DR_",decayRate,"_SA_",startAge,"/",sep=""))
     dir.create(outputDirectoryLocal)
     
     #Do single repeat to provide graphs and stats on this run
