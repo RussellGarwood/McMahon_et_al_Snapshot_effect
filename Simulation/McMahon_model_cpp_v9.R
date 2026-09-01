@@ -196,7 +196,7 @@ runFor <- 20000;
 
 taphonomyDFRandomDecayRates<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge, runFor, FALSE, TRUE)
 
-outputDirectoryLocal<-chartr(".",paste(outputDirectory,"/Experiment_03/",sep=""))
+outputDirectoryLocal<-paste(outputDirectory,"/Experiment_03/",sep="")
 dir.create(outputDirectoryLocal)
 
 #Do single repeat to provide graphs and stats on this run
