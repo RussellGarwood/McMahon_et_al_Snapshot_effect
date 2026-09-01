@@ -14,26 +14,26 @@ graphSingleRun <- function(taphonomyDF, titleString, savePath = "")
   plot_list[[1]]<-ggplot(data = taphonomyDF) + geom_line(mapping = aes_string(y="taphonomyVectorLocal", x = "iterationVector")) +  scale_x_continuous(expand = c(0, 0)) +
     #xlim(0,max(taphonomyDF$iterationVector)) +
     theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA)) +
-    labs(title=paste("Taphonomy Simulator - Decay level"), x="Time", y="Mean non zero taphonomy")
+    labs(title=paste("Decay level"), x="Time", y="Mean non zero taphonomy")
   
   #This shows the number of organisms alive at any time - it'll increase afte ther simulation starts, peak before things start dying, and then reduce to a static value
   plot_list[[2]]<- ggplot(data = taphonomyDF) + geom_line(mapping = aes_string(y="aliveVector", x = "iterationVector")) +  scale_x_continuous(expand = c(0, 0)) +
     #+ xlim(100,max(taphonomyDF$iterationVector)) +
     theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA)) +
-    labs(title=paste("Taphonomy Simulator - Number Alive"), x="Time", y="Number Alive")
+    labs(title=paste("Number Alive"), x="Time", y="Number Alive")
   
   #This shows the number of decaying organisms - will start at zero when the simulation kicks off, increase, then reach a steady state
   plot_list[[3]]<-ggplot(data = taphonomyDF) + geom_line(mapping = aes_string(y="decayingVector",  x = "iterationVector")) +  scale_x_continuous(expand = c(0, 0)) +
     #+ xlim(100,max(taphonomyDF$iterationVector)) +
     theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA)) +
-    labs(title=paste("Taphonomy Simulator - Number Decaying"), x="Time", y="Number Decaying")
+    labs(title=paste("Number Decaying"), x="Time", y="Number Decaying")
   
   #Save as a multipage PDF using grid extra
   if(nchar(savePath)>2)
   {
     ggsave(
       filename <- paste(savePath,"Taphonomy_plots.pdf",sep=""),
-      plot = marrangeGrob(plot_list, nrow=1, ncol=3),
+      plot = marrangeGrob(plot_list, nrow=1, ncol=3, top = titleString),
       width = 10, height = 4
     )
   }

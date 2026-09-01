@@ -27,7 +27,7 @@ outputDirectory<-paste(getwd(),"/results/",sep="")
 ################################################################################################################################################
 
 #Load CPP - in the same folder as this script 
-sourceCpp("McMahon_model_v9.cpp")
+sourceCpp("functions/McMahon_model_v9.cpp")
 #All R functions are in their own folder
 source("functions/graphSingleRun.R")
 
@@ -143,8 +143,8 @@ write.csv(decayLevelDF, paste(outputDirectory,"decayLevelDF.csv",sep=""))
 ############################################ Life span graph ############################################
 #This is panel B, and experiment 2
 
-birthChance <- 0.000015;#This has to be very small so as not to fill the list with long life spans
-decayRate<-0.001;#A decay rate of 100 days
+birthChance <- 0.000015; #This has to be very small so as not to fill the list with long life spans
+decayRate<-0.001; #A decay rate of 100 days
 individuals <- 5000;
 
 #Lifespans of 10 days to 2000 days (5.5 years) for a decay rate of 100 days
