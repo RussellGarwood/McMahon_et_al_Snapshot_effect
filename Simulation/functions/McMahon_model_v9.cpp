@@ -196,7 +196,7 @@ doSimulationAge (int individuals, float birthChance, float decayRate, int repeat
     
     if (timer) benchmark.step ("Simulation_complete");
     
-    // With multiple repeats, we want to record a mean taphonomy value - sort out relevant data from vectors (sorry abouut all the benchmarking, there was originally a bottleneck here)
+    // With multiple repeats, we want to record a mean taphonomy value - sort out relevant data from vectors (sorry about all the benchmarking, there was originally a bottleneck here)
     std::vector<double>  taphonomyForMean (taphonomyVectorLocal.end () - 100, taphonomyVectorLocal.end ());
     if (timer) benchmark.step ("Analysis_01a");
     double total = std::reduce (taphonomyForMean.begin (), taphonomyForMean.end ());

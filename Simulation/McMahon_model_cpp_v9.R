@@ -192,7 +192,7 @@ decayRate<-0.02; # This is max from decay graph
 individuals <- 50000;
 repeats <- 1;
 startAge <- 500;
-runFor <- 50000;
+runFor <- 500000;
 
 ## TO DO - need to update  the code to do a proper output for this 
 #Do single repeat to provide graphs and stats on this run

@@ -60,6 +60,8 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
 ############################################ Single run with random decay rates ############################################
 #This is panel C, and experiment 3
 
+randomRatesDataframe <- randomRatesDataframe |> filter(states != 0)
+
 #No analytical solution for this
 bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))#+(0.001/2)
 
