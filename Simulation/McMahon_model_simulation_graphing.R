@@ -22,12 +22,9 @@ lifeSpanReplicates<-read.csv("decayLevelDFLifeSpan.csv")
 decayLevelDFHeatMap<-read.csv("decayLevelDFHeatMap.csv")
 setwd(wd)
 
+
 #Initialize plotlist
 plot_list <- list()
-
-#A function to put the Y labels to 3DP - this also serves to convert them to text, and thus factorise them 
-#Note, threeDPFunction, as well as making the X axis text pretty, also forces this into making the X axis a factor, and so no need to do this separately using as.factor() 
-threeDPFunction <- function(x) sprintf("%.4f", x)
 
 #We also need to add the analytical solution to the graphs. For this, given the following:
 ## Tau is life span in days
@@ -35,8 +32,9 @@ threeDPFunction <- function(x) sprintf("%.4f", x)
 #We can get the equilibrium level of decay (or mean integrity as per paper terminology) using the formula:
 ## equilibrium_constant_decay(tau, delta) = (2 * tau * delta + 1) / (2 * tau * delta + 2) 
 
-##### Decay rate replicates ##### 
+############################################ Decay rate graph using replicates ############################################
 #This is panel A, and experiment 1
+
 #Simulations at evenly spaced decay rates equating to a time to total decay of 5 days through to a 5 year decay time
 #We can use the same decay rates as the simulations, although we need to use the "per day" column - this is delta
 #For this, sims use start age of 500 (implying a lifespan of 50 days) -  this is tau 
@@ -60,16 +58,28 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
   labs(x="Decay rate (per day)", y="Mean integrity", tag = "A") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) 
 
-##### Random decay rates ##### 
+############################################ Single run with random decay rates ############################################
 #This is panel C, and experiment 3
+
 #No analytical solution for this
-plot_list[[2]]<-ggplot(data = randomRatesDataframe, aes(x=threeDPFunction(decayRateRounded), y=decayLevels)) + geom_boxplot(outlier.alpha = 0.1) +
+bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))
+#This employs life span of 500, so 50 days
+tau <- 50
+
+#tau is start age in days - this is column days in our data frame
+randomRatesDataframe$analyticalSolution <- ((2 * tau * delta) + 1) /  ((2 * tau * delta) + 2)
+
+#plot_list[[2]]<-
+  ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15)) +
   labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16))
 
-##### Life span replicates ##### 
+
+
+############################################ Life span graph ############################################
 #This is panel B, and experiment 2
+
 #This employs decay rate of 0.001 per iteration, equivalent to 100 days to complete decay - delta is 0.01 per day
 delta<- 0.01
 #tau is start age in days - this is column days in our data frame
@@ -84,7 +94,8 @@ plot_list[[3]]<-ggplot(data = lifeSpanReplicates) + geom_boxplot(aes(x=days, y=t
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16))
 
 
-##### Heat map ##### 
+############################################ Heat map ############################################
+#This is panel D and Experiment 4
 
 #Now lets look at the heat map - we need to aggregate the values and calculate the mean to do the graphing
 meanHeatMap <- aggregate(taphonomyValues ~ decayRate + startAge, data = decayLevelDFHeatMap,FUN = mean)
@@ -111,14 +122,8 @@ window <- differences[match(meanHeatMap$decayRate,unique(meanHeatMap$decayRate))
 meanHeatMap$decayRatemin <- meanHeatMap$decayRate - window
 meanHeatMap$decayRatemax <- meanHeatMap$decayRate + window
 
-#Old version - which only coloured the squares by the last replicate
-# ggplot(decayLevelDFHeatMap, aes(x=startAge, y=decayRate, xmin=startAgemin, xmax=startAgemax, ymin=decayRatemin, ymax=decayRatemax, fill=taphonomyValues)) +
-#   geom_rect() + scale_x_log10(expand = c(0, 0)) + scale_y_log10(expand = c(0, 0)) + scale_fill_viridis_c(trans = 'reverse') +
-#   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), legend.position = "bottom", plot.margin = margin(t = 15, r = 5, b = 5, l = 15))  +
-#   labs(x="Lifespan (days)", y="Decay rate (per day)", fill = "Mean integrity ", tag = "D") +
-#   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16))
-
-plot_list[[4]]<-ggplot(meanHeatMap,aes(x = startAge,y = decayRate, xmin = startAgemin, xmax = startAgemax, ymin = decayRatemin, ymax = decayRatemax, fill = meanPreservation)) +
+#plot_list[[4]]<-
+  ggplot(meanHeatMap,aes(x = startAge,y = decayRate, xmin = startAgemin, xmax = startAgemax, ymin = decayRatemin, ymax = decayRatemax, fill = meanPreservation)) +
   geom_rect() +   scale_x_log10(expand = c(0, 0)) + scale_y_log10(expand = c(0, 0)) + scale_fill_viridis_c(trans = 'reverse') +
   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), legend.position = "bottom", plot.margin = margin(t = 15, r = 5, b = 5, l = 15))  +
   labs(x="Lifespan (days)", y="Decay rate (per day)", fill = "Mean integrity ", tag = "D") +
