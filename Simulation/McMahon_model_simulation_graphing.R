@@ -60,55 +60,30 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
 ############################################ Single run with random decay rates ############################################
 #This is panel C, and experiment 3
 
+#We need to filter out those organisms that have yet to spawn (but whose integrity has been reset to 1)
 randomRatesDataframe <- randomRatesDataframe |> filter(states != 0)
 
-#No analytical solution for this
-bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))#+(0.001/2)
-
+#To calculate the analytical solution, we can use the bins 
+bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))
 #This employs life span of 500, so 50 days
 tau <- 50
+#Multiply decay rates by ten to convert iterations to days
 experimentThreeAnalyticalSolution <- ((2 * tau * bin_centres*10) + 1) /  ((2 * tau * bin_centres*10) + 2)
-analytical_df <- data.frame(
-  decayRateRounded = bin_centres,
-  analyticalSolution = experimentThreeAnalyticalSolution
-)
+#Put into a dataframe
+analyticalSolution <- data.frame(decayRateRounded = bin_centres,analyticalSolution = experimentThreeAnalyticalSolution)
 
-randomRatesDataframe$analyticalSolution <- ((2 * tau * (randomRatesDataframe$decayRates*10)) + 1) /  ((2 * tau * (randomRatesDataframe$decayRates*10)) + 2)
-
-analytical_df <- aggregate(
-  analyticalSolution ~ decayRateRounded,
-  data = randomRatesDataframe,
-  FUN = mean
-)
-
-#plot_list[[2]]<-
-  ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15)) +
+plot_list[[2]]<-ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
+  geom_segment(data = analyticalSolution,aes(x = decayRateRounded - 0.00035, xend = decayRateRounded + 0.00035, y = analyticalSolution, yend = analyticalSolution, colour = "Analytical solution"),linewidth = 0.5, alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", shape = 21, size = 3, aes(colour = "Simulation mean")) +
+  scale_colour_manual(name = NULL,values = c("Analytical solution" = scales::alpha("purple", 0.5),"Simulation mean" = "darkred"),guide = 
+        guide_legend (override.aes = list(shape = c(NA, 21),fill = c(NA, NA),linewidth = c(0.5, 0),linetype = c(1, 0),size = c(NA, 3)))) +
+  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15), 
+        legend.position = c(0.98, 0.02), legend.justification = c(1, 0), legend.background = element_rect(fill = alpha("white", 0.5), colour = "grey70")) +
   labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
-  theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) +
-  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "red") +  
-  geom_crossbar(data = analytical_df,aes(x = decayRateRounded,y = analyticalSolution,ymin = analyticalSolution,ymax = analyticalSolution), width = 0.0005, colour = "purple",linewidth = 0.75) 
-
-  ggplot(data = randomRatesDataframe, aes(x=decayRates, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
-    theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15)) +
-    labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
-    theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) +
-    geom_crossbar(
-      data = analytical_df,
-      aes(
-        x = decayRateRounded,
-        y = analyticalSolution,
-        ymin = analyticalSolution,
-        ymax = analyticalSolution
-      ),
-      width = 0.0005,
-      colour = "purple",
-      linewidth = 0.75
-    )
-  
-  
-
-  ############################################ Life span graph ############################################
+  theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) 
+    
+    
+############################################ Life span graph ############################################
 #This is panel B, and experiment 2
 
 #This employs decay rate of 0.001 per iteration, equivalent to 100 days to complete decay - delta is 0.01 per day
@@ -140,8 +115,7 @@ meanHeatMap$difference<-meanHeatMap$analyticalSolution-meanHeatMap$meanPreservat
 # Create rectangle boundaries for the heat map - this is required as we're doing a heat map on a log scale
 differences <- diff(unique(meanHeatMap$startAge))/2
 differences <- append(differences, differences[length(differences)])
-window <- differences[match(meanHeatMap$startAge,
-                            unique(meanHeatMap$startAge))]
+window <- differences[match(meanHeatMap$startAge,unique(meanHeatMap$startAge))]
 
 meanHeatMap$startAgemin <- meanHeatMap$startAge - window
 meanHeatMap$startAgemax <- meanHeatMap$startAge + window
@@ -153,8 +127,7 @@ window <- differences[match(meanHeatMap$decayRate,unique(meanHeatMap$decayRate))
 meanHeatMap$decayRatemin <- meanHeatMap$decayRate - window
 meanHeatMap$decayRatemax <- meanHeatMap$decayRate + window
 
-#plot_list[[4]]<-
-  ggplot(meanHeatMap,aes(x = startAge,y = decayRate, xmin = startAgemin, xmax = startAgemax, ymin = decayRatemin, ymax = decayRatemax, fill = meanPreservation)) +
+plot_list[[4]]<-ggplot(meanHeatMap,aes(x = startAge,y = decayRate, xmin = startAgemin, xmax = startAgemax, ymin = decayRatemin, ymax = decayRatemax, fill = meanPreservation)) +
   geom_rect() +   scale_x_log10(expand = c(0, 0)) + scale_y_log10(expand = c(0, 0)) + scale_fill_viridis_c(trans = 'reverse') +
   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), legend.position = "bottom", plot.margin = margin(t = 15, r = 5, b = 5, l = 15))  +
   labs(x="Lifespan (days)", y="Decay rate (per day)", fill = "Mean integrity ", tag = "D") +
