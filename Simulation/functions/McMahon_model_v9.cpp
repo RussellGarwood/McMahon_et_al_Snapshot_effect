@@ -109,12 +109,16 @@ doSimulationAge (int individuals, float birthChance, float decayRate, int repeat
         // If organism is not in existence, user set chance of spawning
         if (o.state == dead)
         {
-          if (R::runif (0, 1) < birthChance) o.state++;
+          if (R::runif (0, 1) < birthChance)
+          { 
+            o.state++;
+            if (randomDecayRate) o.decayRate = R::runif (minimumDecayRate, decayRate);
+          }
         }
         // If it is is in existence, we have two choices, see below
         else if (o.state == alive)
         {
-          //Either it has reached the end of its life. If so we move it to the graveyard list and reset it to  not having spawned yet in this list
+          //Either it has reached the end of its life. If so we move it to the graveyard list and reset it to not having spawned yet in this list
           if (o.age == 0)
           {
             //Kill the organism and place a copy in the graveyard list

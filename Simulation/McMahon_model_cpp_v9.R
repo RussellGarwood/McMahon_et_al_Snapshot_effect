@@ -192,16 +192,18 @@ decayRate<-0.02; # This is max from decay graph
 individuals <- 50000;
 repeats <- 1;
 startAge <- 500;
-runFor <- 20000;
+runFor <- 50000;
+
+## TO DO - need to update  the code to do a proper output for this 
+#Do single repeat to provide graphs and stats on this run
+# taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,runFor)
+# outputDirectoryLocal<-paste("/home/russellgarwood/Desktop/Taphosim_26","/Experiment_03/",sep="")
+# dir.create(outputDirectoryLocal)
+# graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate, " max rate"), outputDirectoryLocal)
+# taphonomyValues<-doSimulationAge(individuals,birthChance,0.00001,repeats,startAge,runFor)
+# graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate, " min rate"), outputDirectoryLocal)
 
 taphonomyDFRandomDecayRates<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge, runFor, FALSE, TRUE)
-
-outputDirectoryLocal<-paste(outputDirectory,"/Experiment_03/",sep="")
-dir.create(outputDirectoryLocal)
-
-#Do single repeat to provide graphs and stats on this run
-taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,50000)
-graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate), outputDirectoryLocal)
 
 #Prepare for writing then write file
 taphonomyDFRandomDecayRates$decayRateRounded<-round(taphonomyDFRandomDecayRates$decayRates, digits = 3)

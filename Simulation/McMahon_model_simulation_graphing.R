@@ -71,9 +71,7 @@ analytical_df <- data.frame(
   analyticalSolution = experimentThreeAnalyticalSolution
 )
 
-randomRatesDataframe$analyticalSolution <-
-  ((2 * tau * (randomRatesDataframe$decayRates*10)) + 1) /
-  ((2 * tau * (randomRatesDataframe$decayRates*10)) + 2)
+randomRatesDataframe$analyticalSolution <- ((2 * tau * (randomRatesDataframe$decayRates*10)) + 1) /  ((2 * tau * (randomRatesDataframe$decayRates*10)) + 2)
 
 analytical_df <- aggregate(
   analyticalSolution ~ decayRateRounded,
