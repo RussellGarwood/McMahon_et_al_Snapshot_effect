@@ -30,7 +30,7 @@ vline_pos <- 1.5  # since Buenellus is the first factor
 
 # Plot
 plot_list[[1]]<-ggplot(empiricalDataTaphanomicStateLong, aes(x = Taxon, y = Count, fill = State)) +
-  geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Taphonomic State (Articulation)", y = "Count", x = "Taxon") +
+  geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Articulation", y = "Count", x = "Taxon") +
   theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.7),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
   geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black")
 
@@ -59,7 +59,7 @@ empiricalDataPreservationalStateLong <- empiricalDataPreservationalStateLong |> 
 
 # Plot
 plot_list[[3]]<- ggplot(empiricalDataPreservationalStateLong, aes(x = Taxon, y = Count, fill = State)) +
-  geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Preservational State (Retention of labile tissues)", y = "Count", x = "Taxon") +
+  geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Tissue quality", y = "Count", x = "Taxon") +
   theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.7),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
   geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black") +
   annotate("text", x = -0.5, y = max(empiricalDataPreservationalStateLong$Count)/2, 

@@ -26,10 +26,6 @@ setwd(wd)
 #Initialize plotlist
 plot_list <- list()
 
-#A function to put the Y labels to 3DP - this also serves to convert them to text, and thus factorise them 
-#Note, threeDPFunction, as well as making the X axis text pretty, also forces this into making the X axis a factor, and so no need to do this separately using as.factor() 
-threeDPFunction <- function(x) sprintf("%.4f", x)
-
 #We also need to add the analytical solution to the graphs. For this, given the following:
 ## Tau is life span in days
 ## Delta is decay rate per day
@@ -66,10 +62,20 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
 #This is panel C, and experiment 3
 
 #No analytical solution for this
-plot_list[[2]]<-ggplot(data = randomRatesDataframe, aes(x=threeDPFunction(decayRateRounded), y=decayLevels)) + geom_boxplot(outlier.alpha = 0.1) +
+bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))
+#This employs life span of 500, so 50 days
+tau <- 50
+
+#tau is start age in days - this is column days in our data frame
+randomRatesDataframe$analyticalSolution <- ((2 * tau * delta) + 1) /  ((2 * tau * delta) + 2)
+
+#plot_list[[2]]<-
+  ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15)) +
   labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16))
+
+
 
 ############################################ Life span graph ############################################
 #This is panel B, and experiment 2
