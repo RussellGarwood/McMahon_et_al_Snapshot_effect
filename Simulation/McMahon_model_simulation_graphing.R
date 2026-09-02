@@ -22,7 +22,6 @@ lifeSpanReplicates<-read.csv("decayLevelDFLifeSpan.csv")
 decayLevelDFHeatMap<-read.csv("decayLevelDFHeatMap.csv")
 setwd(wd)
 
-
 #Initialize plotlist
 plot_list <- list()
 
@@ -62,22 +61,54 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
 #This is panel C, and experiment 3
 
 #No analytical solution for this
-bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))
+bin_centres <- sort(unique(randomRatesDataframe$decayRateRounded))#+(0.001/2)
+
 #This employs life span of 500, so 50 days
 tau <- 50
+experimentThreeAnalyticalSolution <- ((2 * tau * bin_centres*10) + 1) /  ((2 * tau * bin_centres*10) + 2)
+analytical_df <- data.frame(
+  decayRateRounded = bin_centres,
+  analyticalSolution = experimentThreeAnalyticalSolution
+)
 
-#tau is start age in days - this is column days in our data frame
-randomRatesDataframe$analyticalSolution <- ((2 * tau * delta) + 1) /  ((2 * tau * delta) + 2)
+randomRatesDataframe$analyticalSolution <-
+  ((2 * tau * (randomRatesDataframe$decayRates*10)) + 1) /
+  ((2 * tau * (randomRatesDataframe$decayRates*10)) + 2)
+
+analytical_df <- aggregate(
+  analyticalSolution ~ decayRateRounded,
+  data = randomRatesDataframe,
+  FUN = mean
+)
 
 #plot_list[[2]]<-
   ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15)) +
   labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
-  theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16))
+  theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) +
+  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "red") +  
+  geom_crossbar(data = analytical_df,aes(x = decayRateRounded,y = analyticalSolution,ymin = analyticalSolution,ymax = analyticalSolution), width = 0.0005, colour = "purple",linewidth = 0.75) 
 
+  ggplot(data = randomRatesDataframe, aes(x=decayRates, y=decayLevels, group = factor(decayRateRounded))) + geom_boxplot(outlier.alpha = 0.1) +
+    theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15)) +
+    labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
+    theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) +
+    geom_crossbar(
+      data = analytical_df,
+      aes(
+        x = decayRateRounded,
+        y = analyticalSolution,
+        ymin = analyticalSolution,
+        ymax = analyticalSolution
+      ),
+      width = 0.0005,
+      colour = "purple",
+      linewidth = 0.75
+    )
+  
+  
 
-
-############################################ Life span graph ############################################
+  ############################################ Life span graph ############################################
 #This is panel B, and experiment 2
 
 #This employs decay rate of 0.001 per iteration, equivalent to 100 days to complete decay - delta is 0.01 per day
