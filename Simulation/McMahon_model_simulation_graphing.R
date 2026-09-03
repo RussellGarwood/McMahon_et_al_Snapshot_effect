@@ -52,7 +52,7 @@ plot_list[[1]]<-ggplot(decayLevelReplicates) +
   geom_line(aes(x = PerDay, y = analyticalSolution, colour = "Analytical solution"), inherit.aes = FALSE, alpha = 0.25, linewidth = 1) + scale_colour_manual(name = NULL, values = c("Analytical solution" = "purple")) +
   #Styling
   theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), 
-                          plot.margin = margin(t = 15, r = 5, b = 5, l = 15), legend.position = c(0.98, 0.02), legend.justification = c(1, 0),
+                          plot.margin = margin(t = 15, r = 5, b = 5, l = 15), legend.position = c(0.98, 0.02), legend.justification = c(1, 0), legend.margin = margin(2, 7, 2, 2),
                           legend.background = element_rect(fill = alpha("white", 0.8), colour = "grey70")) + 
   labs(x="Decay rate (per day)", y="Mean integrity", tag = "A") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) 
@@ -77,12 +77,15 @@ plot_list[[2]]<-ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=de
   stat_summary(fun = mean, geom = "point", shape = 21, size = 3, aes(colour = "Simulation mean")) +
   scale_colour_manual(name = NULL,values = c("Analytical solution" = scales::alpha("purple", 0.5),"Simulation mean" = "darkred"),guide = 
         guide_legend (override.aes = list(shape = c(NA, 21),fill = c(NA, NA),linewidth = c(0.5, 0),linetype = c(1, 0),size = c(NA, 3)))) +
-  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15), 
+  theme_minimal() + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.margin = margin(t = 15, r = 5, b = 5, l = 15), legend.margin = margin(2, 7, 2, 2),
         legend.position = c(0.98, 0.02), legend.justification = c(1, 0), legend.background = element_rect(fill = alpha("white", 0.5), colour = "grey70")) +
   labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) 
     
-    
+  
+####CHANGE LEGEND MARGIN ABOVE TO SORT OUT BOX ON THE FINAL FIGURE
+
+  
 ############################################ Life span graph ############################################
 #This is panel B, and experiment 2
 
@@ -94,7 +97,7 @@ lifeSpanReplicates$analyticalSolution <- ((2 * lifeSpanReplicates$days * delta) 
 plot_list[[3]]<-ggplot(data = lifeSpanReplicates) + geom_boxplot(aes(x=days, y=taphonomyValues, group = factor (days)), outlier.alpha = 0.1, width = 40) +
   geom_line(aes(x = days, y = analyticalSolution, colour = "Analytical solution"), inherit.aes = FALSE, alpha = 0.25, linewidth = 1) + scale_colour_manual(name = NULL, values = c("Analytical solution" = "purple")) +
   theme_minimal()  + theme(panel.border = element_rect(color="black", fill=NA), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), 
-                           plot.margin = margin(t = 15, r = 5, b = 5, l = 15), legend.position = c(0.98, 0.02), legend.justification = c(1, 0),
+                           plot.margin = margin(t = 15, r = 5, b = 5, l = 15), legend.position = c(0.98, 0.02), legend.justification = c(1, 0), legend.margin = margin(2, 7, 2, 2),
                            legend.background = element_rect(fill = alpha("white", 0.8), colour = "grey70")) + 
   labs(x="Lifespan (days)", y="Mean integrity", tag = "B") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16))
