@@ -10,6 +10,8 @@ rm("packages")
 #Set working directory if not calling from a bash script
 #setwd("/SET/YOUR/PATH/HERE")
 
+#Note - this assumes the model has just been run from the appropriate R file - the graphing does not require this, but some of the stats rely on data created during simulation runs
+
 ############################################ Graphing ############################################
 outputDirectory<-paste(getwd(),"/graphs/",sep="")
 
@@ -194,15 +196,14 @@ mean(listSDs)
 formatC(mean(listSDs), format="e", digits = 2)
 ggplot(data = data.frame(listSDs,listLifeSpan),aes(x=listLifeSpan, y=listSDs)) + geom_point()
 
-#Let's look at the individual simulation with random start ages
-
+#Let's look at the individual simulation with random decay rates
 #Mean value for minimum decay rate bin
 mean(randomRatesDataframe$decayLevels[randomRatesDataframe$decayRateRounded==min(randomRatesDataframe$decayRateRounded)])
-# 0.6138001
+# 0.5263849
 
 #Mean value for max decay rate bin
 mean(randomRatesDataframe$decayLevels[randomRatesDataframe$decayRateRounded==max(randomRatesDataframe$decayRateRounded)])
-# 0.9727146
+# 0.9411135
 
 listSDs<-vector()
 for (decayRateRounded in unique(randomRatesDataframe$decayRateRounded))
