@@ -244,7 +244,8 @@ doSimulationAge (int individuals, float birthChance, float decayRate, int repeat
     }
     else
     {
-      Rcpp::DataFrame outDataFrame = DataFrame::create (Rcpp::Named ("startAges") = startAges, Rcpp::Named ("decayLevels") = decayLevels, Rcpp::Named ("states") = states, Rcpp::Named ("decayRates") = decayRates);
+      Rcpp::DataFrame outDataFrame = DataFrame::create (Rcpp::Named ("differencesVector") = differencesVector, Rcpp::Named ("taphonomyVectorLocal") = taphonomyVectorLocal, Rcpp::Named ("aliveVector") = aliveVector, Rcpp::Named ("decayingVector") = decayingVector, Rcpp::Named ("iterationVector") = iterationVector);
+      //Rcpp::DataFrame outDataFrame = DataFrame::create (Rcpp::Named ("startAges") = startAges, Rcpp::Named ("decayLevels") = decayLevels, Rcpp::Named ("states") = states, Rcpp::Named ("decayRates") = decayRates);
       if (!timer) return outDataFrame;
     }
     if (timer)   benchmark.step ("Analysis_03b");

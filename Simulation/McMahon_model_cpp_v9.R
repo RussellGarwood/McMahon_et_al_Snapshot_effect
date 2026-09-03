@@ -194,15 +194,11 @@ repeats <- 1;
 startAge <- 500;
 runFor <- 500000;
 
-## TO DO - need to update  the code to do a proper output for this 
-#Do single repeat to provide graphs and stats on this run
-# taphonomyValues<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge,runFor)
-# outputDirectoryLocal<-paste("/home/russellgarwood/Desktop/Taphosim_26","/Experiment_03/",sep="")
-# dir.create(outputDirectoryLocal)
-# graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate, " max rate"), outputDirectoryLocal)
-# taphonomyValues<-doSimulationAge(individuals,birthChance,0.00001,repeats,startAge,runFor)
-# graphSingleRun(taphonomyValues, paste("Single run - startAge ",startAge,", decayRate ",decayRate, " min rate"), outputDirectoryLocal)
-
+#To get equilibration graphs from a single run for this experiment, modify the cpp file in order to overwrite this line:
+#Rcpp::DataFrame outDataFrame = DataFrame::create (Rcpp::Named ("startAges") = startAges, Rcpp::Named ("decayLevels") = decayLevels, Rcpp::Named ("states") = states, Rcpp::Named ("decayRates") = decayRates);
+#With this:
+#Rcpp::DataFrame outDataFrame = DataFrame::create (Rcpp::Named ("differencesVector") = differencesVector, Rcpp::Named ("taphonomyVectorLocal") = taphonomyVectorLocal, Rcpp::Named ("aliveVector") = aliveVector, Rcpp::Named ("decayingVector") = decayingVector, Rcpp::Named ("iterationVector") = iterationVector);
+#And then graph as with other flavours of experiment
 taphonomyDFRandomDecayRates<-doSimulationAge(individuals,birthChance,decayRate,repeats,startAge, runFor, FALSE, TRUE)
 
 #Prepare for writing then write file
