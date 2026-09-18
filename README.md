@@ -6,6 +6,12 @@ McMahon, S., Rodgers, N., Devine, L., Minter, N. and Garwood, R.J. The snapshot 
 
 ## Contents 
 
-To do.
+This repository contains the following folders:
+
+### Analytical
+
+This is the analytical solution to the problem, and contains the associated python script and associated Jupyter notebook.
+
+
 
 
