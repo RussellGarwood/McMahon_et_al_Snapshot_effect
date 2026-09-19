@@ -12,6 +12,12 @@ This repository contains the following folders:
 
 This is the analytical solution to the problem, and contains the associated python script and associated Jupyter notebook.
 
+### Empirical
+
+The root of this folder contains a script (Empirical.R) which loads data from the folder results, and outputs the graphs in the paper into the folder graphs. The script is fully commented, and can be run by calling from bash:
+
+`Rscript Empirical.R`
+
 
 
 
