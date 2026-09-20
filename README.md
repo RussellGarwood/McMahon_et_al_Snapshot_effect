@@ -14,9 +14,9 @@ This is the analytical solution to the problem, and contains the associated pyth
 
 ### Empirical
 
-The root of this folder contains a script (Empirical.R) which loads data from the folder results, and outputs the graphs in the paper into the folder graphs. The script is fully commented, and can be run by calling from bash:
+The root of this folder contains a script (Empirical.R) which loads data from the folder results, and outputs the graphs in the paper into the folder graphs. The script is fully commented, and can be run by calling from bash in a terminal pointed at this folder:
 
-`Rscript Empirical.R`
+`Rscript ./Empirical.R`
 
 
 
