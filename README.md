@@ -18,6 +18,8 @@ The root of this folder contains a script (Empirical.R) which loads data from th
 
 `Rscript ./Empirical.R`
 
+### Equilibration_graphs
 
+This folder contains a zip for each experiment, and each zip comprises the required graphs (in PDF format) to show that the simulations have reach equilibrium. 
 
 
