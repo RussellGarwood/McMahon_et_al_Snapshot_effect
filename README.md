@@ -28,5 +28,5 @@ This folder contains the simulation code: this is split between an R script, whi
 
 `Rscript ./McMahon_model_cpp_v9.R`
 
-and a second R script which creates all of the graphs required for the paper. The simulation is written in C++ and this code is found within the folder functions, alongside an R function for creating equilibration graphs. Outputs of the simulation are found in the folder results (rerunning the experiments will overwrite these results), and graphs output to the folder graphs (rerunning the graphing experiment will )
+It also contains a second R script which creates all of the graphs required for the paper. The simulation is written in C++ and this code is found within the folder functions, alongside an R function for creating equilibration graphs. Outputs of the simulation are found in the folder results, and graphs output to the folder graphs (rerunning either script will overwrite the relevant outputs which are also included in the repository).
 
