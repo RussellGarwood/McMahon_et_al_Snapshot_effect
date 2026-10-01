@@ -52,7 +52,7 @@ plot_list[[2]]<-ggplot(empiricalDataTaphanomicStateNormalisedLong, aes(x = Taxon
 ## Preservational states
 #############################
 
-empiricalDataPreservationalState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "C2:F13",col_names = TRUE,  sheet = "Preservational state")
+empiricalDataPreservationalState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "C2:F15",col_names = TRUE,  sheet = "Preservational state")
 empiricalDataPreservationalState<- empiricalDataPreservationalState[rowSums(!is.na(empiricalDataPreservationalState)) > 0, ]
 empiricalDataPreservationalStateLong <- empiricalDataPreservationalState |>  pivot_longer(cols = starts_with("# in State"),names_to = "State",values_to = "Count")
 empiricalDataPreservationalStateLong <- empiricalDataPreservationalStateLong |> mutate(Taxon = factor(Taxon, levels = taxon_order))
