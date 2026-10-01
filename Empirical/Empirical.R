@@ -16,7 +16,7 @@ plot_list <- list()
 ## Taphonomic states
 #############################
 
-empiricalDataTaphanomicState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "B4:G15",col_names = TRUE,  sheet = "Taphonomic state")
+empiricalDataTaphanomicState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "B5:G18",col_names = TRUE,  sheet = "Taphonomic state")
 #Remove empty rows
 empiricalDataTaphanomicState<-empiricalDataTaphanomicState[rowSums(!is.na(empiricalDataTaphanomicState)) > 0, ]
 #Convert to a long format for graphing
@@ -29,7 +29,7 @@ empiricalDataTaphanomicStateLong <- empiricalDataTaphanomicStateLong |> mutate(T
 vline_pos <- 1.5  # since Buenellus is the first factor
 
 # Plot
-plot_list[[1]]<-ggplot(empiricalDataTaphanomicStateLong, aes(x = Taxon, y = Count, fill = State)) +
+plot_list[[1]]<- ggplot(empiricalDataTaphanomicStateLong, aes(x = Taxon, y = Count, fill = State)) +
   geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Articulation", y = "Count", x = "Taxon") +
   theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.7),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
   geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black")
@@ -42,7 +42,7 @@ empiricalDataTaphanomicStateNormalisedLong<- empiricalDataTaphanomicStateNormali
 empiricalDataTaphanomicStateNormalisedLong <- empiricalDataTaphanomicStateNormalisedLong |> mutate(Taxon = factor(Taxon, levels = taxon_order))
 
 # Plot
-plot_list[[2]]<- ggplot(empiricalDataTaphanomicStateNormalisedLong, aes(x = Taxon, y = Proportion, fill = State)) +
+plot_list[[2]]<-ggplot(empiricalDataTaphanomicStateNormalisedLong, aes(x = Taxon, y = Proportion, fill = State)) +
   geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(y = "Proportion", x = "Taxon", title = " ") +
   theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none", panel.border = element_rect(color="black", fill=NA)) +
   geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black")
