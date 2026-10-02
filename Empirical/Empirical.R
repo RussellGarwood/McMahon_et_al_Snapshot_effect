@@ -16,7 +16,7 @@ plot_list <- list()
 ## Taphonomic states
 #############################
 
-empiricalDataTaphanomicState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "B5:G18",col_names = TRUE,  sheet = "Taphonomic state")
+empiricalDataTaphanomicState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "B4:G17",col_names = TRUE,  sheet = "Taphonomic state")
 #Remove empty rows
 empiricalDataTaphanomicState<-empiricalDataTaphanomicState[rowSums(!is.na(empiricalDataTaphanomicState)) > 0, ]
 #Convert to a long format for graphing
@@ -52,13 +52,13 @@ plot_list[[2]]<-ggplot(empiricalDataTaphanomicStateNormalisedLong, aes(x = Taxon
 ## Preservational states
 #############################
 
-empiricalDataPreservationalState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "C2:F15",col_names = TRUE,  sheet = "Preservational state")
+empiricalDataPreservationalState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "C1:F14",col_names = TRUE,  sheet = "Preservational state")
 empiricalDataPreservationalState<- empiricalDataPreservationalState[rowSums(!is.na(empiricalDataPreservationalState)) > 0, ]
 empiricalDataPreservationalStateLong <- empiricalDataPreservationalState |>  pivot_longer(cols = starts_with("# in State"),names_to = "State",values_to = "Count")
 empiricalDataPreservationalStateLong <- empiricalDataPreservationalStateLong |> mutate(Taxon = factor(Taxon, levels = taxon_order))
 
 # Plot
-plot_list[[3]]<- ggplot(empiricalDataPreservationalStateLong, aes(x = Taxon, y = Count, fill = State)) +
+plot_list[[3]]<-ggplot(empiricalDataPreservationalStateLong, aes(x = Taxon, y = Count, fill = State)) +
   geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Tissue quality", y = "Count", x = "Taxon") +
   theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.7),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
   geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black") +
