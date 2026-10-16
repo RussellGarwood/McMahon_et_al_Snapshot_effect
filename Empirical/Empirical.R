@@ -61,9 +61,7 @@ empiricalDataPreservationalStateLong <- empiricalDataPreservationalStateLong |> 
 plot_list[[3]]<-ggplot(empiricalDataPreservationalStateLong, aes(x = Taxon, y = Count, fill = State)) +
   geom_col() +  scale_fill_viridis_d(option = "D", direction = -1) + labs(title = "Tissue quality", y = "Count", x = "Taxon") +
   theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.7),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
-  geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black") +
-  annotate("text", x = -0.5, y = max(empiricalDataPreservationalStateLong$Count)/2, 
-           label = "Preservational State (loss of labile tissues)", angle = 90, hjust = 0.5)
+  geom_vline(xintercept = vline_pos, linetype = "dashed", color = "black")
 
 empiricalDataPreservationalStateNormalised <- empiricalDataPreservationalState[,-1]
 empiricalDataPreservationalStateNormalised[] <- empiricalDataPreservationalStateNormalised/rowSums(empiricalDataPreservationalStateNormalised, na.rm = TRUE)
@@ -109,7 +107,7 @@ empiricalDataTaphanomicStateIndividuals <- empiricalDataTaphanomicStateLong |>
 
 jitter_plot_list[[1]]<-ggplot(empiricalDataTaphanomicStateIndividuals, aes(x = Taxon, y = StateNum, colour = Biomineralization)) +
   geom_jitter(width = 0.3, height = 0.1, alpha = 0.6) + geom_vline(xintercept = vline_pos, linetype = "dotted", color = "black") +
-  theme_minimal() +  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none", panel.border = element_rect(color="black", fill=NA)) + scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) +
+  theme_minimal() +  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.7, 0.2),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) +
   labs(y = "Articulation", x = "Taxon") +  scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataTaphanomicStateIndividuals$StateNum))) +
   # Add label at the top of y axis
   annotate("label", x = 0.5, y = max(empiricalDataTaphanomicStateIndividuals$StateNum) + 0.3, label = "Aritculated", hjust = 0, colour = "grey50", fill = "white") +
@@ -123,9 +121,9 @@ empiricalDataPreservationalStateIndividuals <- empiricalDataPreservationalStateL
   #Add whether it is biomineralized
   mutate(Biomineralization = if_else(Taxon == "Buenellus", "Biomineralised","Not biomineralised" ))
 
-jitter_plot_list[[2]] <-ggplot(empiricalDataPreservationalStateIndividuals, aes(x = Taxon, y = StateNum, colour = Biomineralization)) +
+jitter_plot_list[[2]] <- ggplot(empiricalDataPreservationalStateIndividuals, aes(x = Taxon, y = StateNum, colour = Biomineralization)) +
   geom_jitter(width = 0.3, height = 0.1, alpha = 0.6) + geom_vline(xintercept = vline_pos, linetype = "dotted", color = "black") + theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = c(0.8, 0.8),  legend.margin = margin(10, 10, 10, 10), legend.spacing = unit(0.5, "cm"), legend.background = element_rect(fill = "white", colour = "grey50"), panel.border = element_rect(color="black", fill=NA)) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none", panel.border = element_rect(color="black", fill=NA)) + 
   scale_colour_viridis_d(option = "D", begin = 0, end = 0.6) + labs(y = "Tissue quality", x = "Taxon") + scale_y_continuous(breaks = scales::pretty_breaks(n = max(empiricalDataPreservationalStateIndividuals$StateNum))) +
   annotate("label", x = 0.5, y = max(empiricalDataPreservationalStateIndividuals$StateNum) + 0.3, label = "Labile tissues remain", hjust = 0, colour = "grey50", fill = "white") +
   annotate("label", x = 0.5, y = min(empiricalDataPreservationalStateIndividuals$StateNum) - 0.3, label = "Labile tissues lost", hjust = 0, colour = "grey50") 
