@@ -2,7 +2,7 @@
 
 Supplementary information for the paper:
 
-McMahon, S., Rodgers, N., Devine, L., Minter, N. and Garwood, R.J. The snapshot effect: can slower decay translate into worse average preservation of fossils?
+McMahon, S., Rodgers, N., Devine, L., Minter, N. and Garwood, R.J. The snapshot effect: can faster decay translate into better average preservation of fossils?
 
 ## Contents 
 
