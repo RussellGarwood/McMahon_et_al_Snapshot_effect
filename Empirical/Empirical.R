@@ -16,7 +16,7 @@ plot_list <- list()
 ## Taphonomic states
 #############################
 
-empiricalDataTaphanomicState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "B4:G17",col_names = TRUE,  sheet = "Taphonomic state")
+empiricalDataTaphanomicState<-read_excel("results/Arthropod taphonomic states.xlsx",range = "B4:G17",col_names = TRUE,  sheet = "Table S1 - Taphonomic")
 #Remove empty rows
 empiricalDataTaphanomicState<-empiricalDataTaphanomicState[rowSums(!is.na(empiricalDataTaphanomicState)) > 0, ]
 #Convert to a long format for graphing
