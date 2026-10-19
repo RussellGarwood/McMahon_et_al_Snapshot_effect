@@ -1,5 +1,5 @@
 ## If packages aren't installed, install them, then load them
-packages <- c("ggplot2", "Rcpp", "gridExtra", "grid","viridis", "scico")
+packages <- c("ggplot2", "Rcpp", "gridExtra", "grid","viridis", "scico", "dplyr")
 if(length(packages[!packages %in% installed.packages()[,"Package"]]) > 0){
   install.packages(packages[!packages %in% installed.packages()[,"Package"]])
 }
@@ -84,10 +84,6 @@ plot_list[[2]]<-ggplot(data = randomRatesDataframe, aes(x=decayRateRounded, y=de
   labs(x="Individual decay rate per day (binned)", y="Individual integrity", tag = "C") +
   theme(plot.tag.position = c(0, 1), plot.tag = element_text(face = "bold", size = 16)) 
     
-  
-####CHANGE LEGEND MARGIN ABOVE TO SORT OUT BOX ON THE FINAL FIGURE
-
-  
 ############################################ Life span graph ############################################
 #This is panel B, and experiment 2
 
